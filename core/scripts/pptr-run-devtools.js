@@ -100,13 +100,22 @@ async function evaluateInSession(session, fn, deps) {
  * @return {Promise<R>}
  */
 async function waitForFunction(session, fn, deps) {
+  let iterations = 0;
   // eslint-disable-next-line no-constant-condition
   while (true) {
     try {
       return await evaluateInSession(session, fn, deps);
     } catch (err) {
-      console.log(err);
+      // Random transient errors are common when first booting up.
+      // Only surface errors if this fails 10 times in a row (~5s)
+      if (iterations > 10) {
+        console.error(`Error waiting for function (#${iterations}):`);
+        console.error(err);
+        console.error('Retrying...');
+      }
       await new Promise(r => setTimeout(r, 500));
+    } finally {
+      ++iterations;
     }
   }
 }
