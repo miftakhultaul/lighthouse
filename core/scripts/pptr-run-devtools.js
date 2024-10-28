@@ -104,7 +104,8 @@ async function waitForFunction(session, fn, deps) {
   while (true) {
     try {
       return await evaluateInSession(session, fn, deps);
-    } catch {
+    } catch (err) {
+      console.log(err);
       await new Promise(r => setTimeout(r, 500));
     }
   }
@@ -161,7 +162,7 @@ async function waitForLighthouseReady() {
 
   const panel = LighthousePanel.LighthousePanel.instance();
 
-  const button = panel.contentElement.querySelector('devtools-button,button');
+  const button = panel.contentElement.querySelector('.vbox.flex-auto').shadowRoot.querySelector('devtools-button,button');
   if (button.disabled) throw new Error('Start button disabled');
 
   const targetManager = TargetManager.TargetManager.instance();
@@ -213,7 +214,7 @@ async function runLighthouse() {
   // In CI clicking the start button just once is flaky and can cause a timeout.
   // Therefore, keep clicking the button until we detect that the run started.
   const intervalHandle = setInterval(() => {
-    const button = panel.contentElement.querySelector('devtools-button,button');
+    const button = panel.contentElement.querySelector('.vbox.flex-auto').shadowRoot.querySelector('devtools-button,button');
     button.click();
   }, 100);
 
