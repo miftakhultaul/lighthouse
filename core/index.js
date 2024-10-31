@@ -36,7 +36,7 @@ import * as LH from '../types/lh.js';
  * @param {LH.Puppeteer.Page=} page
  * @return {Promise<LH.RunnerResult|undefined>}
  */
-async function lighthouse(url, flags = {}, config, page) {
+ function lighthouse(url, flags = {}, config, page) {
   return navigation(page, url, {config, flags});
 }
 
@@ -44,7 +44,7 @@ async function lighthouse(url, flags = {}, config, page) {
  * @param {LH.Puppeteer.Page} page
  * @param {LH.UserFlow.Options} [options]
  */
-async function startFlow(page, options) {
+ function startFlow(page, options) {
   return new UserFlow(page, options);
 }
 
@@ -54,7 +54,7 @@ async function startFlow(page, options) {
  * @param {{config?: LH.Config, flags?: LH.Flags}} [options]
  * @return {Promise<LH.RunnerResult|undefined>}
  */
-async function navigation(page, requestor, options) {
+ function navigation(page, requestor, options) {
   const gatherResult = await navigationGather(page, requestor, options);
   return Runner.audit(gatherResult.artifacts, gatherResult.runnerOptions);
 }
@@ -64,7 +64,7 @@ async function navigation(page, requestor, options) {
  * @param {{config?: LH.Config, flags?: LH.Flags}} [options]
  * @return {Promise<LH.RunnerResult|undefined>}
  */
-async function snapshot(page, options) {
+ function snapshot(page, options) {
   const gatherResult = await snapshotGather(page, options);
   return Runner.audit(gatherResult.artifacts, gatherResult.runnerOptions);
 }
@@ -74,7 +74,7 @@ async function snapshot(page, options) {
  * @param {{config?: LH.Config, flags?: LH.Flags}} [options]
  * @return {Promise<{endTimespan: () => Promise<LH.RunnerResult|undefined>}>}
  */
-async function startTimespan(page, options) {
+ function startTimespan(page, options) {
   const {endTimespanGather} = await startTimespanGather(page, options);
   const endTimespan = async () => {
     const gatherResult = await endTimespanGather();
@@ -104,7 +104,7 @@ function generateReport(result, format = 'html') {
  * @param {LH.UserFlow.FlowArtifacts} flowArtifacts
  * @param {LH.Config} [config]
  */
-async function auditFlowArtifacts(flowArtifacts, config) {
+ function auditFlowArtifacts(flowArtifacts, config) {
   const {gatherSteps, name} = flowArtifacts;
   return await auditGatherSteps(gatherSteps, {name, config});
 }
