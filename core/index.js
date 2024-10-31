@@ -36,7 +36,7 @@ import * as LH from '../types/lh.js';
  * @param {LH.Puppeteer.Page=} page
  * @return {Promise<LH.RunnerResult|undefined>}
  */
-async function lighthouse(url, flags = {}, config, page) {
+ function lighthouse(url, flags = {}, config, page) {
   return navigation(page, url, {config, flags});
 }
 
